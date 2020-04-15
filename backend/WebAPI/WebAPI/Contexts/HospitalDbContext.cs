@@ -10,8 +10,8 @@ namespace WebAPI.Contexts
         {
         }
         public DbSet<Patient> patients { get; set; }
-        public DbSet<Employee> employees { get; set; }
-        public DbSet<PatientRecord> patientRecords { get; set; }
-        public DbSet<Department> departments { get; set; }
+        //public DbSet<Employee> employees { get; set; }
+        //public DbSet<PatientRecord> patientRecords { get; set; }
+        //public DbSet<Department> departments { get; set; }
     }
 }

@@ -4,10 +4,12 @@ import PatientDataGraph from './PatientDataGraph'
 
 export default function Patient() {
     return (
-        <div>
-            <h1>Patient</h1>
-            <PatientDataTable/>
-            <PatientDataGraph/>
-        </div>
+        <>
+            <hr />
+            <PatientDataTable />
+            <hr />
+            <PatientDataGraph />
+            <hr />
+        </>
     )
 }
