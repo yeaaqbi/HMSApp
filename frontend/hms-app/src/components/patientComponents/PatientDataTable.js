@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux";
-import { fetchPatients, deletePatient, createNewPatient } from '../../actions/patientActions'
+import { fetchPatients, deletePatient, createNewPatient, updatePatient } from '../../actions/patientActions'
 import { Table, Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
-
+import { Link } from 'react-router';
 export default function PatientDataTable() {
 
     const dispatch = useDispatch();
@@ -12,9 +12,11 @@ export default function PatientDataTable() {
             name: "",
             email: "",
             dateOfBirth: Date.now,
-            city: "",
+            city: "NA",
         }
     );
+    const [update, setUpdate] = useState(false);
+
     useEffect(() => {
         dispatch(fetchPatients());
     }, [])
@@ -26,25 +28,52 @@ export default function PatientDataTable() {
         }
     }
 
-    const onCreatePatient = e => {
+    const onCreateUpdatePatient = e => {
         e.preventDefault();
-        dispatch(createNewPatient(newPatient));
+        if (!update) {
+            dispatch(createNewPatient(newPatient));
+        }
+        else {
+            if (window.confirm("Are you sure you want to update this patient?")) {
+                dispatch(updatePatient(newPatient.id, newPatient));
+            }
+        }
         toggle();
 
     }
+
+    const showUpdatePatientDialog = (patient) => {
+        setNewPatient(
+            {
+                id: patient.id,
+                name: patient.name,
+                email: patient.email,
+                dateOfBirth: patient.dob,
+                city: patient.city,
+            }
+        )
+        setUpdate(true);
+        setModal(!modal);
+    }
+    const showCreatePatientDialog = () => {
+        setUpdate(false);
+        setModal(!modal);
+    }
+
 
     const [modal, setModal] = useState(false);
 
     const toggle = () => setModal(!modal);
 
+
     const handleInputValues = e => {
         e.preventDefault();
-        setNewPatient({...newPatient,[e.target.name]: e.target.value })
+        setNewPatient({ ...newPatient, [e.target.name]: e.target.value })
     }
     return (
         <div>
             <h3 className="text-left">Patients List</h3>
-            <Button color="primary" className="float-right" onClick={toggle}>Add Patient</Button>
+            <Button color="primary" className="float-right" onClick={() => showCreatePatientDialog()}>Add Patient</Button>
             <Table striped>
                 <thead>
                     <tr>
@@ -66,7 +95,7 @@ export default function PatientDataTable() {
                                     <td>{patient.email}</td>
                                     <td>{patient.dateOfBirth}</td>
                                     <td>{patient.city}</td>
-                                    <td><button onClick={() => onDeletePatient(patient.id)}>Delete</button><button>Edit</button></td>
+                                    <td><button onClick={() => onDeletePatient(patient.id)}>Delete</button><button onClick={() => showUpdatePatientDialog(patient)}>Edit</button></td>
                                 </tr>
                             )
                         })
@@ -79,36 +108,58 @@ export default function PatientDataTable() {
                     <Form>
                         <FormGroup>
                             <Label for="name">Name</Label>
-                            <Input type="text" onChange={handleInputValues} name="name" id="name" placeholder="Please enter patient name" />
+                            <Input
+                                type="text"
+                                value={newPatient.name}
+                                onChange={handleInputValues}
+                                name="name"
+                                id="name"
+                                placeholder="Please enter patient name" />
                         </FormGroup>
                         <FormGroup>
                             <Label for="email">Email</Label>
-                            <Input type="email" onChange={handleInputValues} name="email" id="email" placeholder="Please enter patient email" />
+                            <Input
+                                type="email"
+                                value={newPatient.email}
+                                onChange={handleInputValues}
+                                name="email"
+                                id="email"
+                                placeholder="Please enter patient email" />
                         </FormGroup>
                         <FormGroup>
                             <Label for="dob">Date of birth</Label>
                             <Input
                                 type="date"
+                                value={newPatient.dateOfBirth}
                                 onChange={handleInputValues}
                                 name="dateOfBirth"
                                 id="dateOfBirth"
-                                
+
                             />
                         </FormGroup>
                         <FormGroup>
                             <Label for="select">City</Label>
-                            <Input onChange={handleInputValues} type="select" name="city" id="city">
+                            <Input
+                                onChange={handleInputValues}
+                                type="select"
+                                value={newPatient.city}
+                                name="city"
+                                id="city">
+                                <option>NA</option>
                                 <option>Ramallah</option>
                                 <option>Jenin</option>
                                 <option>Nablus</option>
                                 <option>Hebron</option>
-                                <option>Salfit</option>
+                                <option>Bethlahem</option>
+                                <option>Gaza</option>
+                                <option>Tubas</option>
+                                <option>Qalqilya</option>
                             </Input>
                         </FormGroup>
                     </Form>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={onCreatePatient}>Add</Button>
+                    <Button color="primary" onClick={onCreateUpdatePatient}>{(update ? "Update" : "Add")}</Button>
                     <Button color="secondary" onClick={toggle}>Cancel</Button>
                 </ModalFooter>
             </Modal>
