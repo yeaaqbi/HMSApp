@@ -2,13 +2,17 @@
   <MonoDevelop.Ide.ItemProperties.WebAPI PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MonoDevelop.Ide.Workbench ActiveDocument="WebAPI/Controllers/PatientController.cs">
     <Files>
-      <File FileName="WebAPI/Contexts/HospitalDbContext.cs" Line="13" Column="11" />
-      <File FileName="WebAPI/Models/Patient.cs" />
-      <File FileName="WebAPI/Controllers/PatientController.cs" Line="35" Column="65" />
-      <File FileName="WebAPI/Startup.cs" />
+      <File FileName="WebAPI/Contexts/HospitalDbContext.cs" Line="13" Column="9" />
+      <File FileName="WebAPI/Models/Patient.cs" Line="25" Column="1" />
+      <File FileName="WebAPI/Startup.cs" Line="1" Column="1" />
       <File FileName="WebAPI/appsettings.json" />
       <File FileName="WebAPI/Program.cs" />
       <File FileName="WebAPI/Properties/launchSettings.json" />
+      <File FileName="WebAPI/Models/Department.cs" Line="10" Column="10" />
+      <File FileName="WebAPI/Models/PatientRecord.cs" Line="9" Column="13" />
+      <File FileName="WebAPI/Models/Employee.cs" Line="1" Column="1" />
+      <File FileName="WebAPI/Controllers/PatientRecordsController.cs" Line="1" Column="1" />
+      <File FileName="WebAPI/Controllers/PatientController.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">

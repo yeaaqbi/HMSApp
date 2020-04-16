@@ -8418,7 +8418,7 @@
       "outputPath": "/Users/mohammedyaaqba/Documents/HMSApp/backend/WebAPI/WebAPI/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/mohammedyaaqba/.config/NuGet/NuGet.Config"
+        "/Users/mohammedyaaqba/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"

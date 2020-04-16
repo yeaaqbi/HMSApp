@@ -1,5 +1,4 @@
 
-import api from './api'
 
 export const ACTION_TYPES = {
     CREATE_ENTRY: "CREATE_ENTRY",
@@ -8,65 +7,33 @@ export const ACTION_TYPES = {
 
 }
 
-export const fetchPatients = () => dispatch => {
-    api.patients().fetchAll()
-        .then(
-            response => {
-                dispatch(
-                    {
-                        type: ACTION_TYPES.FETCH_PATIENTS,
-                        data: response.data
-                    }
-                )
-            }
-        )
-        .catch(err => console.log(err))
+export const fetchPatientEntries = id => {
+
+    return (
+        {
+            type: ACTION_TYPES.FETCH_ENTRIES,
+            data: id
+        }
+    )
 }
 
-export const createNewPatient = (patient, onSuccess) => dispatch => {
-    api.patients().create(patient)
-        .then(
-            response => {
-                dispatch(
-                    {
-                        type: ACTION_TYPES.CREATE_PATIENT,
-                        data: response.data
-                    }
-                )
-                onSuccess()
-            }
-        )
-        .catch(err => console.log(err))
+export const createNewPatientEntry = entry => {
+
+    return (
+        {
+            type: ACTION_TYPES.CREATE_ENTRY,
+            data: entry
+        }
+    )
+
 }
 
-export const updatePatient = (id,patient, onSuccess) => dispatch => {
-    api.patients().update(id,patient)
-        .then(
-            response => {
-                dispatch(
-                    {
-                        type: ACTION_TYPES.UPDATE_PATIENT,
-                        data: {id,...patient}
-                    }
-                )
-                onSuccess()
-            }
-        )
-        .catch(err => console.log(err))
-}
+export const updatePatientEntry = entry => {
 
-export const deletePatient = (id, onSuccess) => dispatch => {
-    api.patients().delete(id)
-        .then(
-            response => {
-                dispatch(
-                    {
-                        type: ACTION_TYPES.DELETE_PATIENT,
-                        data: id
-                    }
-                )
-                onSuccess()
-            }
-        )
-        .catch(err => console.log(err))
+    return (
+        {
+            type: ACTION_TYPES.UPDATE_ENTRY,
+            data: entry
+        }
+    )
 }

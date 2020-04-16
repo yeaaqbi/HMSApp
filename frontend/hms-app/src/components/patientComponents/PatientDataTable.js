@@ -16,7 +16,7 @@ export default function PatientDataTable() {
         }
     );
     const [update, setUpdate] = useState(false);
-
+    const [modal, setModal] = useState(false);
     useEffect(() => {
         dispatch(fetchPatients());
     }, [])
@@ -60,8 +60,6 @@ export default function PatientDataTable() {
         setModal(!modal);
     }
 
-
-    const [modal, setModal] = useState(false);
 
     const toggle = () => setModal(!modal);
 
