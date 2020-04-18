@@ -22,6 +22,7 @@ export const patientReducer = (state = initState, action) => {
             return {
                 patientsList: state.patientsList.map(patient => patient.id == action.data.id? action.data:patient)
             }
+            
 
         default:
             return state;

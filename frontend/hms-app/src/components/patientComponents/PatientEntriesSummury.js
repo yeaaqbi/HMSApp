@@ -1,18 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Container, Row, Col, Jumbotron } from 'reactstrap';
-import { useSelector, useDispatch } from "react-redux";
-import { fetchSummuryForPatient } from '../../actions/summuryActions'
+import { useSelector } from "react-redux";
 export default function PatientEntriesSummury(props) {
 
-    const { patientId } = props;
+    const summuryInfo = useSelector(state => state.patientEntriesReducer.summuryInfo);
 
-    const dispatch = useDispatch();
-
-    const summuryInfo = useSelector(state => state.summuryReducer.summuryInfo);
-
-    useEffect(() => {
-        dispatch(fetchSummuryForPatient(patientId));
-    }, [])
 
     return (
         <>
@@ -22,7 +14,7 @@ export default function PatientEntriesSummury(props) {
                         <Jumbotron fluid>
                             <Container fluid>
                                 <h1 className="display-4">Patient<br/>Records</h1>
-                                <p className="lead">{summuryInfo.patientRecordsCount}</p>
+                                <p className="lead">{summuryInfo.entriesCount}</p>
                             </Container>
                         </Jumbotron>
                     </Col>
@@ -30,7 +22,7 @@ export default function PatientEntriesSummury(props) {
                         <Jumbotron fluid>
                             <Container fluid>
                                 <h1 className="display-4">Departments<br/>Visited</h1>
-                                <p className="lead">{summuryInfo.departmentsVisitedCount}</p>
+                                <p className="lead">{summuryInfo.departmentsVisited}</p>
                             </Container>
                         </Jumbotron>
                     </Col>

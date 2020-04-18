@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react'
-import { useSelector, useDispatch } from "react-redux";
+import React from 'react'
+import { useSelector } from "react-redux";
 import { Table } from 'reactstrap';
 
 
-export default function DepartmentsTable(props) {
-    const { patientId } = props;
+export default function DepartmentsTable() {
 
-    const dispatch = useDispatch();
 
-    const departmentsList = useSelector(state => state.departmentReducer.departmentsList);
+    const departmentsTypesList = useSelector(state => state.departmentReducer.departmentsTypes);
 
+    const departmentsVisitsList = useSelector(state => state.patientEntriesReducer.departmentsCount);
 
     return (
         <>
@@ -22,10 +21,10 @@ export default function DepartmentsTable(props) {
                 </thead>
                 <tbody>
                     {
-                        departmentsList.map(department => {
+                        departmentsVisitsList.map(department => {
                             return (
-                                <tr key={department.id}>
-                                    <td>{department.name}</td>
+                                <tr key={department.departmentId}>
+                                    <td>{(departmentsTypesList.find(type => type.id ==department.departmentId) != undefined?departmentsTypesList.find(type => type.id ==department.departmentId).name:"")}</td>
                                     <td>{department.visits}</td>
                                 </tr>
                             )

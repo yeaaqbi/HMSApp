@@ -2,11 +2,11 @@ import React from 'react'
 import PatientDataTable from './PatientDataTable'
 import PatientDataGraph from './PatientDataGraph'
 
-export default function Patient() {
+export default function Patient(props) {
     return (
         <>
             <hr />
-            <PatientDataTable />
+            <PatientDataTable  />
             <hr />
             <PatientDataGraph />
             <hr />

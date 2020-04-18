@@ -1,25 +1,33 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux";
-import { Table, Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Table, Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input } from 'reactstrap';
 import { createNewPatientEntry, updatePatientEntry } from '../../actions/patientEntriesActions'
 import { deletePatient } from '../../actions/patientActions'
+import { fetchAllDepartments } from '../../actions/departmentActions'
+import { fetchPatientEntries } from '../../actions/patientEntriesActions'
 
 
 export default function PatientEntriesTable(props) {
-
-    const {patientId} = props;
-
     const dispatch = useDispatch();
+    const { patientId } = props;
+    useEffect(() => {
+        dispatch(fetchAllDepartments());
+        dispatch(fetchPatientEntries(patientId));
+
+    }, [])
+
+    const departmentsTypesList = useSelector(state => state.departmentReducer.departmentsTypes);
 
     const patientEntriesList = useSelector(state => state.patientEntriesReducer.entriesList);
 
+
     const [patientEntry, setPatientEntry] = useState(
         {
-            id: "",
-            patientId: "",
-            departmentId: "",
+            id: 0,
+            patientId: patientId,
+            departmentId: 0,
             entryDate: Date.now(),
-            bill: ""
+            bill: null
         }
     );
 
@@ -31,11 +39,18 @@ export default function PatientEntriesTable(props) {
     const removePatient = () => {
         if (window.confirm("Are you sure you want to delete this patient?")) {
             dispatch(deletePatient(patientId));
+            props.history.push('/');
         }
     }
 
     const showCreateEntryDialog = () => {
-        setPatientEntry({});
+        setPatientEntry({
+            id: 0,
+            patientId: patientId,
+            departmentId: 0,
+            entryDate: Date.now(),
+            bill: null
+        });
         setUpdate(false);
         setModal(!modal);
     }
@@ -46,19 +61,21 @@ export default function PatientEntriesTable(props) {
         }
         else {
             if (window.confirm("Are you sure you want to update this entry?")) {
-                dispatch(updatePatientEntry(patientEntry));
+                dispatch(updatePatientEntry(patientEntry.id, patientEntry));
             }
         }
         toggle();
 
     }
 
+
     const showUpdateEntryDialog = (entry) => {
         setPatientEntry(
             {
                 id: entry.id,
-                patientId: entry.patientId,
+                patientId: patientId,
                 departmentId: entry.departmentId,
+                departmentName: entry.departmentName,
                 entryDate: entry.entryDate,
                 bill: entry.bill
 
@@ -91,9 +108,9 @@ export default function PatientEntriesTable(props) {
                             return (
                                 <tr key={entry.id}>
                                     <td>{entry.id}</td>
-                                    <td>{entry.departmentId}</td>
+                                    <td>{(departmentsTypesList.find(type => type.id ==entry.departmentId) != undefined?departmentsTypesList.find(type => type.id ==entry.departmentId).name:"")}</td>
                                     <td>{entry.entryDate}</td>
-                                    <td>{entry.bill}</td>
+                                    <td>{entry.bill}$</td>
                                     <td><button onClick={() => showUpdateEntryDialog(entry)}>Edit</button></td>
                                 </tr>
                             )
@@ -128,9 +145,13 @@ export default function PatientEntriesTable(props) {
                                     name="departmentId"
                                     id="departmentId">
                                     <option>NA</option>
-                                    <option>Test1</option>
-                                    <option>Test2</option>
-                                    <option>Test3</option>
+                                    {
+                                        departmentsTypesList.map(dept => {
+                                            return (
+                                                <option key={dept.id} value={dept.id}>{dept.name}</option>
+                                            )
+                                        })
+                                    }
                                 </Input>
                             </FormGroup>
                             <FormGroup>

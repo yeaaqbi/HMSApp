@@ -1,30 +1,15 @@
 import { ACTION_TYPES } from '../actions/departmentActions'
 
 const initState = {
-    departmentsList: [
-        {
-            id:1,
-            name:"Heart",
-            visits:14
-        },
-        {
-            id:2,
-            name:"Teeth",
-            visits:10
-        },
-        {
-            id:3,
-            name:"Eyes",
-            visits:4
-        }
-    ]
+    departmentsTypes: []
 }
 
 export const departmentReducer = (state = initState, action) => {
     switch (action.type) {
-        case ACTION_TYPES.FETCH_DEPARTMENTS_FOR:
+        case ACTION_TYPES.FETCH_DEPARTMENTS_ALL:
             return {
-                departmentsList: action.data
+                ...state,
+                departmentsTypes: action.data
             }
 
         default:

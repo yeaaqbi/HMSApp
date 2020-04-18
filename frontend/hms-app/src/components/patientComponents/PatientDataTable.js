@@ -2,11 +2,18 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux";
 import { fetchPatients, deletePatient, createNewPatient, updatePatient } from '../../actions/patientActions'
 import { Table, Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
-import { Link } from 'react-router';
-export default function PatientDataTable() {
+import { Link } from 'react-router-dom';
+import { fetchPatientEntries } from '../../actions/patientEntriesActions'
+
+export default function PatientDataTable(props) {
+    const { filters } = props;
 
     const dispatch = useDispatch();
-    const patients = useSelector(state => state.patientReducer.patientsList);
+    let patients = useSelector(state => state.patientReducer.patientsList);
+    /** Filters */
+    //City
+    patients = (filters.city != '' ? patients.filter(patient => patient.city == filters.city) : patients);
+
     const [newPatient, setNewPatient] = useState(
         {
             name: "",
@@ -19,13 +26,16 @@ export default function PatientDataTable() {
     const [modal, setModal] = useState(false);
     useEffect(() => {
         dispatch(fetchPatients());
+        dispatch(fetchPatientEntries(0))
     }, [])
 
 
     const onDeletePatient = id => {
         if (window.confirm("Are you sure you want to delete this patient?")) {
             dispatch(deletePatient(id));
+            dispatch(fetchPatientEntries(0));
         }
+
     }
 
     const onCreateUpdatePatient = e => {
@@ -56,6 +66,7 @@ export default function PatientDataTable() {
         setModal(!modal);
     }
     const showCreatePatientDialog = () => {
+        setNewPatient({});
         setUpdate(false);
         setModal(!modal);
     }
@@ -89,7 +100,7 @@ export default function PatientDataTable() {
                             return (
                                 <tr key={patient.id}>
                                     <td>{patient.id}</td>
-                                    <td>{patient.name}</td>
+                                    <td><Link to={"/Patient/" + patient.id}>{patient.name}</Link></td>
                                     <td>{patient.email}</td>
                                     <td>{patient.dateOfBirth}</td>
                                     <td>{patient.city}</td>

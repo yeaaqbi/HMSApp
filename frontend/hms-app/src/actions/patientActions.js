@@ -1,6 +1,6 @@
 
 import api from './api'
-
+import { fetchPatientEntries } from '../actions/patientEntriesActions'
 export const ACTION_TYPES = {
     CREATE_PATIENT: "CREATE_PATIENT",
     UPDATE_PATIENT: "UPDATE_PATIENT",
@@ -66,8 +66,9 @@ export const deletePatient = (id, onSuccess) => dispatch => {
                         data: id
                     }
                 )
-                onSuccess()
+                onSuccess(dispatch(fetchPatientEntries(0)))
             }
         )
         .catch(err => console.log(err))
 }
+
