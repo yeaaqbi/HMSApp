@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux";
-import { Table, Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input } from 'reactstrap';
 import { createNewPatientEntry, updatePatientEntry } from '../../actions/patientEntriesActions'
 import { deletePatient } from '../../actions/patientActions'
 import { fetchAllDepartments } from '../../actions/departmentActions'
 import { fetchPatientEntries } from '../../actions/patientEntriesActions'
+import Moment from 'moment';
 
 
-export default function PatientEntriesTable(props) {
+const PatientEntriesTable = props => {
     const dispatch = useDispatch();
     const { patientId } = props;
     useEffect(() => {
@@ -39,7 +40,7 @@ export default function PatientEntriesTable(props) {
     const removePatient = () => {
         if (window.confirm("Are you sure you want to delete this patient?")) {
             dispatch(deletePatient(patientId));
-            props.history.push('/');
+            window.location = '/';
         }
     }
 
@@ -91,16 +92,18 @@ export default function PatientEntriesTable(props) {
     }
     return (
         <>
-            <Button color="danger" className="float-right" onClick={() => removePatient()} >Delete Patient</Button>
-            <Table striped>
+            <span><h3 className="title" >PATIENT ENTRIES</h3></span>
+            <span>
+                <button className="btn-red" onClick={() => removePatient()} >Delete Patient</button>
+                <button className="btn-normal" onClick={() => showCreateEntryDialog()} >Add New Entry</button>
+            </span>
+            <table className="table">
                 <thead>
-                    <tr>
-                        <td>Entry Id</td>
-                        <td>Department</td>
-                        <td>Entry Date</td>
-                        <td>Bill</td>
-                        <td>Actions</td>
-                    </tr>
+                    <th>Entry Id</th>
+                    <th>Department</th>
+                    <th>Entry Date</th>
+                    <th>Bill</th>
+                    <th>Actions</th>
                 </thead>
                 <tbody>
                     {
@@ -108,8 +111,8 @@ export default function PatientEntriesTable(props) {
                             return (
                                 <tr key={entry.id}>
                                     <td>{entry.id}</td>
-                                    <td>{(departmentsTypesList.find(type => type.id ==entry.departmentId) != undefined?departmentsTypesList.find(type => type.id ==entry.departmentId).name:"")}</td>
-                                    <td>{entry.entryDate}</td>
+                                    <td>{(departmentsTypesList.find(type => type.id == entry.departmentId) != undefined ? departmentsTypesList.find(type => type.id == entry.departmentId).name : "")}</td>
+                                    <td>{Moment(entry.entryDate).format('MMMM DD, YYYY')}</td>
                                     <td>{entry.bill}$</td>
                                     <td><button onClick={() => showUpdateEntryDialog(entry)}>Edit</button></td>
                                 </tr>
@@ -117,8 +120,7 @@ export default function PatientEntriesTable(props) {
                         })
                     }
                 </tbody>
-            </Table>
-            <Button color="primary" className="float-right" onClick={() => showCreateEntryDialog()} >Add New Entry</Button>
+            </table>
 
             <Modal isOpen={modal} toggle={toggle} >
                 <ModalHeader toggle={toggle}>Add New Entry</ModalHeader>
@@ -176,3 +178,4 @@ export default function PatientEntriesTable(props) {
         </>
     )
 }
+export default PatientEntriesTable;

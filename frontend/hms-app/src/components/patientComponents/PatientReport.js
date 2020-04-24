@@ -2,18 +2,19 @@ import React from 'react'
 import PatientEntriesTable from './PatientEntriesTable'
 import PatientEntriesSummury from './PatientEntriesSummury'
 import DepartmentsTable from './DepartmentsTable'
-import {useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-export default function PatientReport() {
+const PatientReport =() => {
     const { id } = useParams();
     const patientId = parseInt(id);
     return (
         <>
-            <PatientEntriesTable patientId={patientId} />
-            <hr />
-            <DepartmentsTable patientId={patientId} />
-            <hr />
             <PatientEntriesSummury patientId={patientId} />
+            <PatientEntriesTable patientId={patientId} />
+            <DepartmentsTable patientId={patientId} />
+
         </>
     )
 }
+
+export default PatientReport;

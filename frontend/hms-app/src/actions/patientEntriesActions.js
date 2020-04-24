@@ -4,7 +4,7 @@ export const ACTION_TYPES = {
     CREATE_ENTRY: "CREATE_ENTRY",
     UPDATE_ENTRY: "UPDATE_ENTRY",
     FETCH_ENTRIES: "FETCH_ENTRIES",
-
+    FILTER_ENTRIES: "FILTER_ENTRIES"
 }
 const formatData = data => ({
     ...data,
@@ -40,26 +40,34 @@ export const createNewPatientEntry = (entry, onSuccess) => dispatch => {
                         type: ACTION_TYPES.CREATE_ENTRY,
                         data: response.data
                     }
-                
+
                 )
                 onSuccess()
             }
         )
         .catch(err => console.log(err))
 }
-export const updatePatientEntry = (id,entry, onSuccess) => dispatch => {
+export const updatePatientEntry = (id, entry, onSuccess) => dispatch => {
     entry = formatData(entry);
-    api.patientRecords().update(id,entry)
+    api.patientRecords().update(id, entry)
         .then(
             response => {
                 dispatch(
                     {
                         type: ACTION_TYPES.UPDATE_ENTRY,
-                        data: {id,...entry}
+                        data: { id, ...entry }
                     }
                 )
                 onSuccess()
             }
         )
         .catch(err => console.log(err))
+}
+export const filterPatientsEntries = (filters, onSuccess) => dispatch => {
+    dispatch(
+        {
+            type: ACTION_TYPES.FILTER_ENTRIES,
+            data: filters
+        }
+    )
 }

@@ -7,7 +7,8 @@ const initState = {
         departmentsVisited: 0,
         billsAvg: 0
     },
-    departmentsCount: []
+    departmentsCount: [],
+    entriesBackupList: [],
 }
 
 export const patientEntriesReducer = (state = initState, action) => {
@@ -15,13 +16,14 @@ export const patientEntriesReducer = (state = initState, action) => {
         case ACTION_TYPES.FETCH_ENTRIES:
             return {
                 ...state,
-                entriesList: (action.patientId !==0 ?action.data.filter(entry => entry.patientId === action.patientId):action.data),
+                entriesList: (action.patientId !== 0 ? action.data.filter(entry => entry.patientId === action.patientId) : action.data),
                 summuryInfo: {
                     entriesCount: action.data.filter(entry => entry.patientId === action.patientId).length,
                     departmentsVisited: action.data.filter(entry => entry.patientId === action.patientId).map(item => item.departmentId).filter((value, index, self) => self.indexOf(value) === index).length,
                     billsAvg: Number((action.data.filter(entry => entry.patientId === action.patientId).reduce((a, b) => a + b['bill'], 0) / action.data.filter(entry => entry.patientId === action.patientId).length).toFixed(1))
                 },
-                departmentsCount: fecthDepartmentsCounts(action.patientId !==0 ?action.data.filter(entry => entry.patientId === action.patientId):action.data)
+                departmentsCount: fecthDepartmentsCounts(action.patientId !== 0 ? action.data.filter(entry => entry.patientId === action.patientId) : action.data),
+                entriesBackupList: action.data
             }
         case ACTION_TYPES.CREATE_ENTRY:
             return {
@@ -46,6 +48,13 @@ export const patientEntriesReducer = (state = initState, action) => {
                 departmentsCount: fecthDepartmentsCounts(state.entriesList.map(entry => entry.id === action.data.id ? action.data : entry))
 
             }
+        case ACTION_TYPES.FILTER_ENTRIES:
+            return {
+                ...state,
+                entriesList: (action.data.departmentId ? state.entriesBackupList.filter(entry => entry.departmentId == parseInt(action.data.department)) : state.entriesBackupList),
+                departmentsCount: fecthDepartmentsCounts(action.data.department ? state.entriesBackupList.filter(entry => entry.departmentId == parseInt(action.data.department)) : state.entriesBackupList),
+
+            }
         default:
             return state;
     }
@@ -53,7 +62,7 @@ export const patientEntriesReducer = (state = initState, action) => {
 
 const fecthDepartmentsCounts = (entries) => {
     var departments = entries.map(entry => {
-        return(entry.departmentId)
+        return (entry.departmentId)
     });
     const initialValue = {}
     const reducer = function (item, visit) {

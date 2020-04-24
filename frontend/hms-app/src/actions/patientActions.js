@@ -5,7 +5,9 @@ export const ACTION_TYPES = {
     CREATE_PATIENT: "CREATE_PATIENT",
     UPDATE_PATIENT: "UPDATE_PATIENT",
     DELETE_PATIENT: "DELETE_PATIENT",
-    FETCH_PATIENTS: "FETCH_PATIENTS"
+    FETCH_PATIENTS: "FETCH_PATIENTS",
+    FILTER_PATIENTS: "FILTER_PATIENTS",
+    SEARCH_PATIENTS_TABLE: "SEARCH_PATIENTS_TABLE"
 
 }
 
@@ -40,14 +42,14 @@ export const createNewPatient = (patient, onSuccess) => dispatch => {
         .catch(err => console.log(err))
 }
 
-export const updatePatient = (id,patient, onSuccess) => dispatch => {
-    api.patients().update(id,patient)
+export const updatePatient = (id, patient, onSuccess) => dispatch => {
+    api.patients().update(id, patient)
         .then(
             response => {
                 dispatch(
                     {
                         type: ACTION_TYPES.UPDATE_PATIENT,
-                        data: {id,...patient}
+                        data: { id, ...patient }
                     }
                 )
                 onSuccess()
@@ -70,5 +72,23 @@ export const deletePatient = (id, onSuccess) => dispatch => {
             }
         )
         .catch(err => console.log(err))
+}
+
+export const filterPatients = (filters) => {
+    return (
+        {
+            type: ACTION_TYPES.FILTER_PATIENTS,
+            data: filters
+        }
+    )
+}
+
+export const searchPatients = (key) => {
+    return (
+        {
+            type: ACTION_TYPES.SEARCH_PATIENTS_TABLE,
+            data: key
+        }
+    )
 }
 
