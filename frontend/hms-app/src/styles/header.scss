@@ -1,0 +1,43 @@
+$primary-color:#0082e6;
+.header {
+    background: $primary-color;
+    height: 100px;
+    width: 100%;
+
+    ul {
+        float: right;
+        margin-right: 30px;
+
+        li {
+            display: inline-block;
+            line-height: 80px;
+            margin: 0 5px;
+
+            a {
+                color: white;
+                font-size: 18px;
+                text-transform: uppercase;
+                padding: 7px 13px;
+                border-radius: 3px;
+                text-decoration: none;
+                &:hover{
+                    background: #1b9bff;
+                    transition: .5s;
+                }
+            }
+            .active {
+                background: #1b9bff;
+                transition: .5s;
+            }
+           
+        }
+    }
+
+    .logo {
+        color: white;
+        font-size: 35px;
+        line-height: 85px;
+        padding: 0 100px;
+        font-weight: bold;
+    }
+}
